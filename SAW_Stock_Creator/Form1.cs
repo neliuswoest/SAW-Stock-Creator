@@ -20,8 +20,10 @@ namespace SAW_Stock_Creator
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            
             MessageBox.Show("Test");
+            EvoDAC.SDKConnector();
+            
 
         }
     }
