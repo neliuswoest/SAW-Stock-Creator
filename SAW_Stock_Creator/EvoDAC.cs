@@ -24,56 +24,7 @@ namespace SAW_Stock_Creator
         public static string CommonInitialCatalog = ConfigurationManager.AppSettings["CommonDatabase"];
         public static string CommonUserName = ConfigurationManager.AppSettings["CommonUserName"];
         public static string CommonPassword = ConfigurationManager.AppSettings["CommonPassword"];
-
-    
-
-        //public static DataTable ResultTable(string script)
-        //{
-        //    DataTable dt = new DataTable(); //Create ne datatable to store script in that holds the query result
-        //    dt.Clear();
-
-        //    SqlConnectionStringBuilder cb = new SqlConnectionStringBuilder();
-        //    cb.DataSource = SDservername;
-        //    cb.InitialCatalog = SDinitialCatalog;
-        //    cb.UserID = SDuserName;
-        //    cb.Password = SDpassword;
-
-        //    try
-        //    {
-        //        using (SqlConnection lSqlCon = new SqlConnection(cb.ToString()))
-        //        {
-        //            lSqlCon.Open();
-        //            BusinessLogic.WriteToLogFile(DateTime.Now.ToString() + ": " + "Connection to Evolution database opened success.");
-        //            using (SqlCommand lSqlCmd = new SqlCommand())
-        //            {
-        //                lSqlCmd.Connection = lSqlCon;
-        //                lSqlCmd.CommandType = CommandType.Text;
-        //                lSqlCmd.CommandText = script;
-        //                lSqlCmd.ExecuteNonQuery();
-        //                SqlDataAdapter da = new SqlDataAdapter(lSqlCmd);
-        //                BusinessLogic.WriteToLogFile(DateTime.Now.ToString() + ": " + script + "\nExecuted and returned: ");
-        //                da.Fill(dt);
-        //                BusinessLogic.WriteToLogFile(DateTime.Now.ToString() + ": \nDatatable dt. ");
-        //            }
-        //            try
-        //            {
-        //                lSqlCon.Close();
-        //                BusinessLogic.WriteToLogFile(DateTime.Now.ToString() + ": " + "Connection to Evolution database closed success.");
-        //            }
-        //            catch (Exception ex) //If this connection does not close it will result in zombi connections.
-        //            {
-        //                BusinessLogic.WriteToLogFile(DateTime.Now.ToString() + ": " + ex.ToString());
-        //                //Force connection closure by sending modified packet header. Phase 2 Development.
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        BusinessLogic.WriteToLogFile(DateTime.Now.ToString() + ": " + ex.ToString());
-        //    }
-        //    return dt;
-        //}
-
+        
 
         public static void WriteToLogFile(string message)
         {
@@ -108,6 +59,46 @@ namespace SAW_Stock_Creator
                 throw;
             }
         }
+
+        public static void CommitSqlScript(string script)
+        {
+            SqlConnectionStringBuilder cb = new SqlConnectionStringBuilder();
+            cb.DataSource = EvolutionServerName;
+            cb.InitialCatalog = EvolutionInitialCatalog;
+            cb.UserID = EvolutionUserName;
+            cb.Password = EvolutionPassword;
+
+            try
+            {
+                using (SqlConnection lSqlCon = new SqlConnection(cb.ToString()))
+                {
+                    lSqlCon.Open();
+                    WriteToLogFile(DateTime.Now.ToString() + ": " + "Connection to Evolution database opened success.");
+                    using (SqlCommand lSqlCmd = new SqlCommand())
+                    {
+                        lSqlCmd.Connection = lSqlCon;
+                        lSqlCmd.CommandType = CommandType.Text;
+                        lSqlCmd.CommandText = script;
+                        lSqlCmd.ExecuteNonQuery();
+                        SqlDataAdapter da = new SqlDataAdapter(lSqlCmd);
+                        WriteToLogFile(DateTime.Now.ToString() + ": " + script + "\nExecuted and returned: ");
+                    }
+                    try
+                    {
+                        lSqlCon.Close();
+                        WriteToLogFile(DateTime.Now.ToString() + ": " + "Connection to Evolution database closed success.");
+                    }
+                    catch (Exception ex) 
+                    {
+                        WriteToLogFile(DateTime.Now.ToString() + ": " + ex.ToString());
+                        throw;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteToLogFile(DateTime.Now.ToString() + ": " + ex.ToString());
+            }
+        }
     }
 }
-

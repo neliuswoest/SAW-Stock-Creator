@@ -23,7 +23,13 @@ namespace SAW_Stock_Creator
             
             MessageBox.Show("Test");
             EvoDAC.SDKConnector();
+           // EvoDAC.CommitSqlScrip("update [StkItem] set Code = 'AAA' where StockLink = 1");
             
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
 
         }
     }
