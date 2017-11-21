@@ -29,7 +29,7 @@ namespace SAW_Stock_Creator
             string sellingPrice1;
             string inventoryItemID;
 
-            if ((comboBox1.SelectedIndex < 1) || String.IsNullOrEmpty(textBox1.Text) || String.IsNullOrEmpty(textBox2.Text) || String.IsNullOrEmpty(textBox3.Text))
+            if ((comboBox1.SelectedIndex < 1) || (String.IsNullOrEmpty(textBox1.Text)) || (String.IsNullOrEmpty(textBox2.Text)) || (String.IsNullOrEmpty(textBox3.Text)))
             {
                 MessageBox.Show("You have to enter values in all fields.", "Error",MessageBoxButtons.OK,MessageBoxIcon.Asterisk);
             }
@@ -218,6 +218,7 @@ namespace SAW_Stock_Creator
                                     break;
                             }
 
+                            MessageBox.Show("Inventory Item Created as: \n\nCode: "+ invNumber + "\nDescription: "+ invDescription + "\nSellingPrice: "+ sellingPrice1 + " ", "Success", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             textBox1.Clear();
                             textBox2.Clear();
                             textBox3.Clear();
@@ -287,6 +288,8 @@ namespace SAW_Stock_Creator
         {
             Application.Exit();
         }
+
+        //test
     }
 
 }
